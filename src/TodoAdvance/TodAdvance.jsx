@@ -1,42 +1,42 @@
 // import "./styles.css";
 import React from "react";
 import { useState } from "react";
-import "./AdvanceTodo.css"
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+import "./AdvanceTodo.css";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import LibraryAddCheckIcon from "@mui/icons-material/LibraryAddCheck";
 
-export const TodoAdvance =()=> {
+export const TodoAdvance = () => {
   const [list, setList] = useState([]);
   const [text, setText] = useState("");
   const [newText, setNewText] = useState(null);
   const [isEdite, setisEdite] = useState(false);
 
   const handleAdd = () => {
-    if(!text){
-        alert("plz Enetr Text")
+    if (!text) {
+      alert("plz Enetr Text");
+    } else if (text && isEdite) {
+      setList(
+        list.map((elem) => {
+          if (elem.id === newText) {
+            return { ...elem, name: text };
+          }
+          return elem;
+        })
+      );
+      setText("");
+      setisEdite(false);
+      setNewText(null);
+      setTimeout(() => {
+        alert("Updated Successfully");
+      }, 500);
+    } else {
+      const alldata = { id: new Date().getTime().toString(), name: text };
+      setList([...list, alldata]);
+      setText("");
     }
-    else if(text && isEdite){
-        setList(list.map((elem)=>{
-            if(elem.id===newText){
-                return {...elem,name:text}
-            }
-            return elem
-        }))
-    setText("")
-    setisEdite(false)
-    setNewText(null)
-    setTimeout(() => {
-      alert("Updated Successfully")
-    }, 500);
-    }
-    else {
-        const alldata={id:new Date().getTime().toString(),name:text}
-        setList([...list, alldata]);
-        setText("")
-    }
-    console.log(list)
+    console.log(list);
   };
 
   const handleDelete = (id) => {
@@ -45,33 +45,73 @@ export const TodoAdvance =()=> {
   };
 
   const handleUpdate = (id) => {
-    const newItem=list.find((elem)=>elem.id===id)
-    setText(newItem.name)
-    setisEdite(true)
-    setNewText(id)
+    const newItem = list.find((elem) => elem.id === id);
+    setText(newItem.name);
+    setisEdite(true);
+    setNewText(id);
   };
   return (
     <div className="Box2">
+      <h1>Fist commit from cmd</h1>
       <input
         type="text"
-        style={{backgroundColor:isEdite?"yellow":"transparent",fontWeight:"bolder",fontSize:"20px",width:"240px"}}
+        style={{
+          backgroundColor: isEdite ? "yellow" : "transparent",
+          fontWeight: "bolder",
+          fontSize: "20px",
+          width: "240px",
+        }}
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-     {isEdite?<LibraryAddCheckIcon sx={{color:"green",height:"45px",width:"45px",top:"18px",position:"relative"}}onClick={handleAdd}/>
-      : <LibraryAddIcon sx={{color:"blue",height:"45px",width:"45px",top:"18px",position:"relative"}}onClick={handleAdd}/>}
-              
+      {isEdite ? (
+        <LibraryAddCheckIcon
+          sx={{
+            color: "green",
+            height: "45px",
+            width: "45px",
+            top: "18px",
+            position: "relative",
+          }}
+          onClick={handleAdd}
+        />
+      ) : (
+        <LibraryAddIcon
+          sx={{
+            color: "blue",
+            height: "45px",
+            width: "45px",
+            top: "18px",
+            position: "relative",
+          }}
+          onClick={handleAdd}
+        />
+      )}
+
       {list.map((item) => {
         return (
           <div className="item">
             <h1>{item.name}</h1>
-            <div style={{float:"right", position:"relative",top:"12px",right:"15px"}}>
-            <DeleteForeverIcon sx={{color:"red",height:"35px",width:"35px"}} onClick={() => handleDelete(item.id)}/>
-            <BorderColorIcon  sx={{ color:"white", height:"35px",width:"35px"}} onClick={() => handleUpdate(item.id)}/>
+            <div
+              style={{
+                float: "right",
+                position: "relative",
+                top: "12px",
+                right: "15px",
+              }}
+            >
+              <DeleteForeverIcon
+                sx={{ color: "red", height: "35px", width: "35px" }}
+                onClick={() => handleDelete(item.id)}
+              />
+              <BorderColorIcon
+                sx={{ color: "white", height: "35px", width: "35px" }}
+                onClick={() => handleUpdate(item.id)}
+              />
             </div>
           </div>
         );
       })}
     </div>
   );
-}
+};
